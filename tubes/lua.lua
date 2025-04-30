@@ -942,7 +942,6 @@ for white  = 0, 1 do
 		after_dig_node = function(pos, node)
 			mesecon.do_cooldown(pos)
 			mesecon.receptor_off(pos, output_rules)
-			pipeworks.after_dig(pos, node)
 		end,
 		is_luacontroller = true,
 		on_timer = node_timer,
@@ -994,7 +993,6 @@ for white  = 0, 1 do
 				return go_back(velocity)
 			end,
 		},
-		after_place_node = pipeworks.after_place,
 		on_blast = function(pos, intensity)
 			if not intensity or intensity > 1 + 3^0.5 then
 				minetest.remove_node(pos)
@@ -1076,8 +1074,6 @@ minetest.register_node(BASENAME .. "_burnt", {
 		connect_sides = {front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1},
 		priority = 50,
 	},
-	after_place_node = pipeworks.after_place,
-	after_dig_node = pipeworks.after_dig,
 	on_blast = function(pos, intensity)
 		if not intensity or intensity > 1 + 3^0.5 then
 			minetest.remove_node(pos)

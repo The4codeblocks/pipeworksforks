@@ -425,9 +425,7 @@ for _, data in ipairs({
 		end,
 		after_place_node = function (pos, placer)
 			minetest.get_meta(pos):set_string("owner", placer:get_player_name())
-			pipeworks.after_place(pos)
 		end,
-		after_dig_node = pipeworks.after_dig,
 		on_rotate = pipeworks.on_rotate,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 			if not pipeworks.may_configure(pos, player) then
@@ -452,6 +450,7 @@ for _, data in ipairs({
 			return count
 		end,
 		tube = {connect_sides = {right = 1}},
+		connect_sides = {"right"},
 	}
 
 	if data.digiline then

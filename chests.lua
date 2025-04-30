@@ -9,6 +9,7 @@ pipeworks.chests = {}
 -- @param connect_sides: which directions the chests shall connect to
 function pipeworks.override_chest(chestname, override, connect_sides)
 	local old_def = minetest.registered_nodes[chestname]
+	local nodebox_connection = {}
 
 	local tube_entry = "^pipeworks_tube_connection_wooden.png"
 	override.tiles = override.tiles or old_def.tiles
@@ -22,24 +23,13 @@ function pipeworks.override_chest(chestname, override, connect_sides)
 	local tile_directions = {"top", "bottom", "right", "left", "back", "front"}
 	for i, direction in ipairs(tile_directions) do
 		if connect_sides[direction] then
+			table.insert( nodebox_connection, direction )
 			if type(override.tiles[i]) == "string" then
 				override.tiles[i] = override.tiles[i] .. tube_entry
 			elseif type(override.tiles[i]) == "table" and not override.tiles[i].animation then
 				override.tiles[i].name = override.tiles[i].name .. tube_entry
 			end
 		end
-	end
-
-	local old_after_place_node = override.after_place_node or old_def.after_place_node or function()  end
-	override.after_place_node = function(pos, placer, itemstack, pointed_thing)
-		old_after_place_node(pos, placer, itemstack, pointed_thing)
-		pipeworks.after_place(pos)
-	end
-
-	local old_after_dig = override.after_dig or old_def.after_dig_node or function()  end
-	override.after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		old_after_dig(pos, oldnode, oldmetadata, digger)
-		pipeworks.after_dig(pos, oldnode, oldmetadata, digger)
 	end
 
 	local old_on_rotate
@@ -84,6 +74,7 @@ function pipeworks.override_chest(chestname, override, connect_sides)
 	override.groups = override.groups or old_def.groups or {}
 	override.groups.tubedevice = 1
 	override.groups.tubedevice_receiver = 1
+	override.connect_sides = nodebox_connection
 
 	minetest.override_item(chestname, override)
 	pipeworks.chests[chestname] = true

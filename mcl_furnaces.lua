@@ -76,17 +76,8 @@ override.tube = {
       end
    end,
    input_inventory = "dst",
-   connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
+   connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1},
 }
-
-override.after_place_node = function(pos, placer, itemstack, pointed_thing)
-   pipeworks.after_place(pos, placer, itemstack, pointed_thing)
-end
-
-override.after_dig_node = function(pos, oldnode, oldmetadata, digger)
-   old_furnace.after_dig_node(pos, oldnode, oldmetadata, digger)
-   pipeworks.after_dig(pos)
-end
 
 override.on_metadata_inventory_take = function(pos, listname, index, stack, player)
    if listname == "dst" then
@@ -101,6 +92,7 @@ end
 
 override.on_rotate = pipeworks.on_rotate
 
+override.connect_sides = {"left", "right", "back", "bottom", "top"}
 
 local override_active = table.copy(override)
 
@@ -187,15 +179,6 @@ override_blast_furnace.tube = {
    input_inventory = "dst",
    connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
 }
-
-override_blast_furnace.after_place_node = function(pos, placer, itemstack, pointed_thing)
-   pipeworks.after_place(pos, placer, itemstack, pointed_thing)
-end
-
-override_blast_furnace.after_dig_node = function(pos, oldnode, oldmetadata, digger)
-   old_blast_furnace.after_dig_node(pos, oldnode, oldmetadata, digger)
-   pipeworks.after_dig(pos)
-end
 
 override_blast_furnace.on_metadata_inventory_take = function(pos, listname, index, stack, player)
    -- Award smelting achievements
@@ -298,15 +281,6 @@ override_smoker.tube = {
    input_inventory = "dst",
    connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
 }
-
-override_smoker.after_place_node = function(pos, placer, itemstack, pointed_thing)
-   pipeworks.after_place(pos, placer, itemstack, pointed_thing)
-end
-
-override_smoker.after_dig_node = function(pos, oldnode, oldmetadata, digger)
-   old_smoker.after_dig_node(pos, oldnode, oldmetadata, digger)
-   pipeworks.after_dig(pos)
-end
 
 override_smoker.on_metadata_inventory_take = function(pos, listname, index, stack, player)
    -- Award fish achievements

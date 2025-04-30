@@ -165,8 +165,14 @@ local texture_alpha_mode = minetest.features.use_texture_alpha_string_modes
 	and "clip" or true
 
 if pipeworks.enable_one_way_tube then
-	local tiles = {"pipeworks_one_way_tube_top.png", "pipeworks_one_way_tube_top.png", "pipeworks_one_way_tube_output.png",
-		"pipeworks_one_way_tube_input.png", "pipeworks_one_way_tube_side.png", "pipeworks_one_way_tube_top.png"}
+	local tiles = {
+		"pipeworks_one_way_tube.png",
+		"pipeworks_one_way_tube.png^[transformR180",
+		"pipeworks_one_way_tube_port.png",
+		"pipeworks_one_way_tube_port.png",
+		"pipeworks_one_way_tube.png^[transformR180",
+		"pipeworks_one_way_tube.png"
+	}
 	for i, tile in ipairs(tiles) do
 		tiles[i] = pipeworks.make_tube_tile(tile)
 	end
@@ -178,8 +184,13 @@ if pipeworks.enable_one_way_tube then
 		drawtype = "nodebox",
 		paramtype = "light",
 		node_box = {type = "fixed",
-			fixed = {{-1/2, -9/64, -9/64, 1/2, 9/64, 9/64}}},
-		groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 2, tubedevice = 1, axey=1, handy=1, pickaxey=1},
+			fixed = {
+				{-1/2, -9/64, -9/64, -9/64, 9/64, 9/64},
+				{9/64, -9/64, -9/64, 1/2, 9/64, 9/64},
+				{-13/64, -13/64, -13/64, 13/64, 13/64, 13/64}
+			}
+		},
+		groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 2, tubedevice = 1, tube = 1, axey=1, handy=1, pickaxey=1},
 		is_ground_content = false,
 		_mcl_hardness=0.8,
 		_sound_def = {
@@ -196,8 +207,7 @@ if pipeworks.enable_one_way_tube then
 			end,
 			priority = 75 -- Higher than normal tubes, but lower than receivers
 		},
-		after_place_node = pipeworks.after_place,
-		after_dig_node = pipeworks.after_dig,
+		connect_sides = {"left","right"},
 		on_rotate = pipeworks.on_rotate,
 		check_for_pole = pipeworks.check_for_vert_tube,
 		check_for_horiz_pole = pipeworks.check_for_horiz_tube

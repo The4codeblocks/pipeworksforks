@@ -123,6 +123,10 @@ function pipeworks.register_wielder(def)
 			axey = 1, handy = 1, pickaxey = 1,
 			not_in_creative_inventory = state == "on" and 1 or nil
 		}
+		local connect_sides = {}
+		for k, _ in ipairs(def.connect_sides) do
+			table.insert(connect_sides, k)
+		end
 		minetest.register_node(def.name.."_"..state, {
 			description = def.description,
 			tiles = def.tiles[state],
@@ -175,6 +179,7 @@ function pipeworks.register_wielder(def)
 					return stack:get_count()
 				end,
 			},
+			connect_sides = connect_sides,
 			on_construct = function(pos)
 				local meta = minetest.get_meta(pos)
 				local inv = meta:get_inventory()

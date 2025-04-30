@@ -6,6 +6,7 @@ local pane_box = {
 	type = "fixed",
 	fixed = {
 		{ -9/64, -9/64, -8/16, 9/64, 9/64, 8/16 }, -- tube
+		{ -12/64, -12/64, -12/64, 12/64, 12/64, 12/64 }, -- tube core
 		{ -8/16, -8/16, -1/16, 8/16, 8/16, 1/16 } -- pane
 	}
 }
@@ -21,8 +22,8 @@ minetest.register_node("pipeworks:steel_pane_embedded_tube", {
 		pipeworks.make_tube_tile("pipeworks_pane_embedded_tube_sides.png^[transformR90"),
 		pipeworks.make_tube_tile("pipeworks_pane_embedded_tube_sides.png"),
 		pipeworks.make_tube_tile("pipeworks_pane_embedded_tube_sides.png"),
-		pipeworks.make_tube_tile("pipeworks_pane_embedded_tube_ends.png"),
-		pipeworks.make_tube_tile("pipeworks_pane_embedded_tube_ends.png"),
+		pipeworks.make_tube_tile("pipeworks_pane.png^pipeworks_one_way_tube_port.png"),
+		pipeworks.make_tube_tile("pipeworks_pane.png^pipeworks_one_way_tube_port.png"),
 	},
 	use_texture_alpha = texture_alpha_mode,
 	node_box = pane_box,
@@ -46,8 +47,7 @@ minetest.register_node("pipeworks:steel_pane_embedded_tube", {
 			return vector.equals(dir, direction) or vector.equals(vector.multiply(dir, -1), direction)
 		end,
 	},
-	after_place_node = pipeworks.after_place,
-	after_dig_node = pipeworks.after_dig,
-	on_rotate = pipeworks.on_rotate,
+			on_rotate = pipeworks.on_rotate,
+	connect_sides = {"front", "back"},
 })
 pipeworks.ui_cat_tube_list[#pipeworks.ui_cat_tube_list+1] = "pipeworks:steel_pane_embedded_tube"

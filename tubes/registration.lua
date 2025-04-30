@@ -12,9 +12,7 @@ local REGISTER_COMPATIBILITY = true
 
 local vti = {4, 3, 2, 1, 6, 5}
 
-local default_noctrs = { "pipeworks_tube_noctr.png" }
 local default_plain = { "pipeworks_tube_plain.png" }
-local default_ends = { "pipeworks_tube_end.png" }
 
 local texture_mt = {
 	__index = function(table, key)
@@ -31,81 +29,48 @@ local texture_mt = {
 local texture_alpha_mode = minetest.features.use_texture_alpha_string_modes
 	and "clip" or true
 
-local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, ends, short, inv, special, connects, style)
-	noctrs = noctrs or default_noctrs
-	setmetatable(noctrs, texture_mt)
+local box = {
+    type = "connected",
+    connect_top =    { -9/64,  9/64, -9/64, 9/64, 1/2,   9/64 },
+    connect_bottom = { -9/64, -1/2,   -9/64, 9/64,-9/64, 9/64 },
+    connect_front =  { -9/64, -9/64, -1/2,   9/64, 9/64,-9/64 },
+    connect_back =   { -9/64, -9/64,  9/64, 9/64, 9/64, 1/2   },
+    connect_left =   { -1/2,   -9/64, -9/64,-9/64, 9/64, 9/64 },
+    connect_right =  {  9/64, -9/64, -9/64, 1/2,   9/64, 9/64 },
+    fixed =          { -12/64, -12/64, -12/64, 12/64, 12/64, 12/64 }
+}
+
+local selbox = {
+    type = "connected",
+    connect_top =    { -10/64,  10/64, -10/64, 10/64, 1/2,   10/64 },
+    connect_bottom = { -10/64, -1/2,   -10/64, 10/64,-10/64, 10/64 },
+    connect_front =  { -10/64, -10/64, -1/2,   10/64, 10/64,-10/64 },
+    connect_back =   { -10/64, -10/64,  10/64, 10/64, 10/64, 1/2   },
+    connect_left =   { -1/2,   -10/64, -10/64,-10/64, 10/64, 10/64 },
+    connect_right =  {  10/64, -10/64, -10/64, 1/2,   10/64, 10/64 },
+    fixed =          { -13/64, -13/64, -13/64, 13/64, 13/64, 13/64 }
+}
+
+local register_one_tube = function(name, tname, dropname, desc, plain, _, _, _, inv, special, connects, style)
 	plain = plain or default_plain
 	setmetatable(plain, texture_mt)
-	ends = ends or default_ends
-	setmetatable(ends, texture_mt)
-	short = short or "pipeworks_tube_short.png"
 	inv = inv or "pipeworks_tube_inv.png"
 
-	local outboxes = {}
-	local outsel = {}
-	local outimgs = {}
-
-	for i = 1, 6 do
-		outimgs[vti[i]] = plain[i]
-	end
-
-	for _, v in ipairs(connects) do
-		pipeworks.table_extend(outboxes, pipeworks.tube_boxes[v])
-		table.insert(outsel, pipeworks.tube_selectboxes[v])
-		outimgs[vti[v]] = noctrs[v]
-	end
-
-	if #connects == 1 then
-		local v = connects[1]
-		v = v-1 + 2*(v%2) -- Opposite side
-		outimgs[vti[v]] = ends[v]
-	end
-
-	local tgroups = {snappy = 3, tube = 1, tubedevice = 1, not_in_creative_inventory = 1, dig_generic = 4, axey=1, handy=1, pickaxey=1}
-	local tubedesc = string.format("%s %s", desc, dump(connects))
-	local iimg = type(plain[1]) == "table" and plain[1].name or plain[1]
-	local wscale = {x = 1, y = 1, z = 1}
-
-	if #connects == 0 then
-		tgroups = {snappy = 3, tube = 1, tubedevice = 1, dig_generic = 4, axey=1, handy=1, pickaxey=1}
-		tubedesc = desc
-		iimg=inv
-		outimgs = {
-			short, short,
-			ends[3],ends[4],
-			short, short
-		}
-		outboxes = { -24/64, -9/64, -9/64, 24/64, 9/64, 9/64 }
-		outsel = { -24/64, -10/64, -10/64, 24/64, 10/64, 10/64 }
-		wscale = {x = 1, y = 1, z = 0.01}
-	end
-
-	for i, tile in ipairs(outimgs) do
-		outimgs[i] = pipeworks.make_tube_tile(tile)
-	end
-
-	local rname = string.format("%s_%s", name, tname)
-	table.insert(tubenodes, rname)
+	table.insert(tubenodes, name)
 
 	local nodedef = {
-		description = tubedesc,
+		description = desc,
 		drawtype = "nodebox",
-		tiles = outimgs,
+		tiles = plain,
 		use_texture_alpha = texture_alpha_mode,
 		sunlight_propagates = true,
-		inventory_image = iimg,
-		wield_image = iimg,
-		wield_scale = wscale,
+		inventory_image = inv,
+		wield_image = inv,
+		wield_scale = {x = 1, y = 1, z = 0.01},
 		paramtype = "light",
-		selection_box = {
-			type = "fixed",
-			fixed = outsel
-		},
-		node_box = {
-			type = "fixed",
-			fixed = outboxes
-		},
-		groups = tgroups,
+		selection_box = selbox,
+		node_box = box,
+		groups = {snappy = 3, tube = 1, tubedevice = 1, dig_generic = 4, axey=1, handy=1, pickaxey=1},
 		is_ground_content = false,
 		_mcl_hardness=0.8,
 		_sound_def = {
@@ -113,6 +78,7 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, e
 		},
 		walkable = true,
 		basename = name,
+		connects_to = {"group:tubedevice","group:injector"},
 		style = style,
 		drop = string.format("%s_%s", name, dropname),
 		tubelike = 1,
@@ -132,9 +98,7 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, e
 			end
 			return minetest.node_punch(pos, node, player, pointed)
 		end,
-		after_place_node = pipeworks.after_place,
-		after_dig_node = pipeworks.after_dig,
-		on_rotate = false,
+						on_rotate = false,
 		on_blast = function(pos, intensity)
 			if not intensity or intensity > 1 + 3^0.5 then
 				minetest.remove_node(pos)
@@ -147,9 +111,6 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, e
 		check_for_horiz_pole = pipeworks.check_for_horiz_tube,
 		tubenumber = tonumber(tname)
 	}
-	if style == "6d" then
-		nodedef.paramtype2 = "facedir"
-	end
 
 	if special == nil then special = {} end
 
@@ -169,10 +130,12 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, e
 		end
 	end
 
-	minetest.register_node(rname, nodedef)
+	local rname = string.format("%s_%s", name, tname)
+	core.register_alias(rname, name)
+	if not core.registered_nodes[name] then core.register_node(name, nodedef) end
 end
 
-local register_all_tubes = function(name, desc, plain, noctrs, ends, short, inv, special, old_registration)
+local register_all_tubes = function(name, desc, plain, _, _, _, inv, special, old_registration)
 	if old_registration then
 		for xm = 0, 1 do
 		for xp = 0, 1 do
@@ -200,7 +163,7 @@ local register_all_tubes = function(name, desc, plain, noctrs, ends, short, inv,
 				connects[#connects+1] = 6
 			end
 			local tname = xm..xp..ym..yp..zm..zp
-			register_one_tube(name, tname, "000000", desc, plain, noctrs, ends, short, inv, special, connects, "old")
+			register_one_tube(name, tname, "000000", desc, plain, nil, nil, nil, inv, special, connects, "old")
 		end
 		end
 		end
@@ -212,7 +175,7 @@ local register_all_tubes = function(name, desc, plain, noctrs, ends, short, inv,
 		-- 6d tubes: uses only 10 nodes instead of 64, but the textures must be rotated
 		local cconnects = {{}, {1}, {1, 2}, {1, 3}, {1, 3, 5}, {1, 2, 3}, {1, 2, 3, 5}, {1, 2, 3, 4}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5, 6}}
 		for index, connects in ipairs(cconnects) do
-			register_one_tube(name, tostring(index), "1", desc, plain, noctrs, ends, short, inv, special, connects, "6d")
+			register_one_tube(name, tostring(index), "1", desc, plain, nil, nil, nil, inv, special, connects, "6d")
 		end
 		if REGISTER_COMPATIBILITY then
 			local cname = name.."_compatibility"
@@ -225,8 +188,7 @@ local register_all_tubes = function(name, desc, plain, noctrs, ends, short, inv,
 				paramtype = "light",
 				sunlight_propagates = true,
 				description = S("Pneumatic tube segment (legacy)"),
-				after_place_node = pipeworks.after_place,
-				groups = {not_in_creative_inventory = 1, tube_to_update = 1, tube = 1},
+								groups = {not_in_creative_inventory = 1, tube_to_update = 1, tube = 1},
 				is_ground_content = false,
 				tube = {connect_sides = {front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1}},
 				drop = name.."_1",
@@ -254,7 +216,7 @@ end
 pipeworks.register_tube = function(name, def, ...)
 	if type(def) == "table" then
 		register_all_tubes(name, def.description,
-				def.plain, def.noctr, def.ends, def.short,
+				def.plain, nil, nil, nil,
 				def.inventory_image, def.node_def, def.no_facedir)
 	else
 		-- we assert to be the old function with the second parameter being the description

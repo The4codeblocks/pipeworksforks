@@ -1,5 +1,6 @@
 local S = minetest.get_translator("pipeworks")
-minetest.register_node("pipeworks:trashcan", {
+local voidname = "pipeworks:trashcan"
+minetest.register_node(voidname, {
 	description = S("Trash Can"),
 	drawtype = "normal",
 	tiles = {
@@ -43,10 +44,10 @@ minetest.register_node("pipeworks:trashcan", {
 		meta:set_string("infotext", S("Trash Can"))
 		meta:get_inventory():set_size("trash", 1)
 	end,
-	after_place_node = pipeworks.after_place,
-	after_dig_node = pipeworks.after_dig,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.get_meta(pos):get_inventory():set_stack(listname, index, ItemStack(""))
 	end,
 })
-pipeworks.ui_cat_tube_list[#pipeworks.ui_cat_tube_list+1] = "pipeworks:trashcan"
+pipeworks.ui_cat_tube_list[#pipeworks.ui_cat_tube_list+1] = voidname
+pipeworks.flowables.register.simple(voidname)
+pipeworks.flowables.register.output(voidname, 0, 0, function(pos, node, currentpressure, finitemode, currentfluidtype) return 4, currentfluidtype end, function()end)
