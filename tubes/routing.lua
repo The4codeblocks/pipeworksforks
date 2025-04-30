@@ -208,7 +208,6 @@ if pipeworks.enable_one_way_tube then
 			priority = 75 -- Higher than normal tubes, but lower than receivers
 		},
 		connect_sides = {"left","right"},
-		on_rotate = pipeworks.on_rotate,
 		check_for_pole = pipeworks.check_for_vert_tube,
 		check_for_horiz_pole = pipeworks.check_for_horiz_tube
 	})

@@ -32,26 +32,6 @@ function pipeworks.override_chest(chestname, override, connect_sides)
 		end
 	end
 
-	local old_on_rotate
-	if override.on_rotate ~= nil then
-		old_on_rotate = override.on_rotate
-	elseif old_def.on_rotate ~= nil then
-		old_on_rotate = old_def.on_rotate
-	else
-		old_on_rotate = function()  end
-	end
-	-- on_rotate = false -> rotation disabled, no need to update tubes
-	-- everything else: undefined by the most common screwdriver mods
-	if type(old_on_rotate) == "function" then
-		override.on_rotate = function(pos, node, user, mode, new_param2)
-			if old_on_rotate(pos, node, user, mode, new_param2) ~= false then
-				return pipeworks.on_rotate(pos, node, user, mode, new_param2)
-			else
-				return false
-			end
-		end
-	end
-
 	override.tube = {
 		insert_object = function(pos, node, stack, direction)
 			local meta = minetest.get_meta(pos)

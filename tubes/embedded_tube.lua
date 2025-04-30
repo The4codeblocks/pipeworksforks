@@ -47,7 +47,6 @@ function pipeworks.register_embedded_tube(nodename, opts)
 		},
 		after_place_node = pipeworks.after_place,
 		after_dig_node = pipeworks.after_dig,
-		on_rotate = pipeworks.on_rotate,
 	})
 
 	minetest.register_craft( {

@@ -47,7 +47,6 @@ minetest.register_node("pipeworks:steel_pane_embedded_tube", {
 			return vector.equals(dir, direction) or vector.equals(vector.multiply(dir, -1), direction)
 		end,
 	},
-			on_rotate = pipeworks.on_rotate,
 	connect_sides = {"front", "back"},
 })
 pipeworks.ui_cat_tube_list[#pipeworks.ui_cat_tube_list+1] = "pipeworks:steel_pane_embedded_tube"

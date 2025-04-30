@@ -90,8 +90,6 @@ override.on_metadata_inventory_take = function(pos, listname, index, stack, play
    end
 end
 
-override.on_rotate = pipeworks.on_rotate
-
 override.connect_sides = {"left", "right", "back", "bottom", "top"}
 
 local override_active = table.copy(override)
@@ -189,9 +187,6 @@ override_blast_furnace.on_metadata_inventory_take = function(pos, listname, inde
       give_xp(pos, player)
    end
 end
-
-override_blast_furnace.on_rotate = pipeworks.on_rotate
-
 
 local override_blast_active = table.copy(override)
 
@@ -291,9 +286,6 @@ override_smoker.on_metadata_inventory_take = function(pos, listname, index, stac
       give_xp(pos, player)
    end
 end
-
-override_smoker.on_rotate = pipeworks.on_rotate
-
 
 local override_smoker_active = table.copy(override)
 

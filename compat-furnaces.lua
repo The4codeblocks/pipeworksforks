@@ -62,8 +62,6 @@ local override = {
 		connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
 	},
 
-	on_rotate = pipeworks.on_rotate,
-
 	connect_sides = {"left", "right", "back", "bottom", "top"}
 }
 
@@ -112,8 +110,6 @@ local override_active = {
 		input_inventory = "dst",
 		connect_sides = {left = 1, right = 1, back = 1, bottom = 1, top = 1}
 	},
-
-	on_rotate = pipeworks.on_rotate,
 
 	connect_sides = {"left", "right", "back", "bottom", "top"}
 }

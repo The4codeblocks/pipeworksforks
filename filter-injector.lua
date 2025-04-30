@@ -426,7 +426,6 @@ for _, data in ipairs({
 		after_place_node = function (pos, placer)
 			minetest.get_meta(pos):set_string("owner", placer:get_player_name())
 		end,
-		on_rotate = pipeworks.on_rotate,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 			if not pipeworks.may_configure(pos, player) then
 				return 0
