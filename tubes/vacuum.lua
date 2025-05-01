@@ -36,7 +36,6 @@ end
 
 local function repair_tube(pos, was_node)
 	minetest.swap_node(pos, {name = was_node.name, param2 = was_node.param2})
-	pipeworks.scan_for_tube_objects(pos)
 	set_timer(pos)
 end
 

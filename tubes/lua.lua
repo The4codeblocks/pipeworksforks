@@ -999,7 +999,6 @@ for white  = 0, 1 do
 				return
 			end
 			minetest.swap_node(pos, {name = "pipeworks:broken_tube_1"})
-			pipeworks.scan_for_tube_objects(pos)
 		end,
 	})
 end
@@ -1080,7 +1079,6 @@ minetest.register_node(BASENAME .. "_burnt", {
 			return
 		end
 		minetest.swap_node(pos, {name = "pipeworks:broken_tube_1"})
-		pipeworks.scan_for_tube_objects(pos)
 	end,
 })
 

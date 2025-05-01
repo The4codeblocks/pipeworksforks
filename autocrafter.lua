@@ -511,10 +511,6 @@ minetest.register_node("pipeworks:autocrafter", {
 		local inv = meta:get_inventory()
 		return (inv:is_empty("src") and inv:is_empty("dst"))
 	end,
-	after_place_node = pipeworks.scan_for_tube_objects,
-	after_dig_node = function(pos)
-		pipeworks.scan_for_tube_objects(pos)
-	end,
 	on_destruct = function(pos)
 		autocrafterCache[minetest.hash_node_position(pos)] = nil
 	end,

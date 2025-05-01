@@ -190,7 +190,6 @@ function pipeworks.register_wielder(def)
 				set_wielder_formspec(def, meta)
 			end,
 			after_place_node = function(pos, placer)
-				pipeworks.scan_for_tube_objects(pos)
 				if not placer then
 					return
 				end
@@ -205,7 +204,6 @@ function pipeworks.register_wielder(def)
 						minetest.add_item(pos, stack)
 					end
 				end
-				pipeworks.scan_for_tube_objects(pos)
 			end,
 			allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 				if not pipeworks.may_configure(pos, player) then return 0 end

@@ -105,7 +105,6 @@ local register_one_tube = function(name, tname, dropname, desc, plain, _, _, _, 
 				return {string.format("%s_%s", name, dropname)}
 			end
 			minetest.swap_node(pos, {name = "pipeworks:broken_tube_1"})
-			pipeworks.scan_for_tube_objects(pos)
 		end,
 		check_for_pole = pipeworks.check_for_vert_tube,
 		check_for_horiz_pole = pipeworks.check_for_horiz_tube,
@@ -224,20 +223,4 @@ pipeworks.register_tube = function(name, def, ...)
 		assert(type(def) == "string", "invalid arguments to pipeworks.register_tube")
 		register_all_tubes(name, def, ...)
 	end
-end
-
-
-if REGISTER_COMPATIBILITY then
-	minetest.register_abm({
-		nodenames = {"group:tube_to_update"},
-		interval = 1,
-		chance = 1,
-		action = function(pos, node, active_object_count, active_object_count_wider)
-			local minp = vector.subtract(pos, 1)
-			local maxp = vector.add(pos, 1)
-			if table.getn(minetest.find_nodes_in_area(minp, maxp, "ignore")) == 0 then
-				pipeworks.scan_for_tube_objects(pos)
-			end
-		end
-	})
 end

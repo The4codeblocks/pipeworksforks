@@ -92,7 +92,6 @@ pipeworks.register_tube("pipeworks:broken_tube", {
 					nodedef.tube.on_repair(pos, was_node)
 				else
 					minetest.swap_node(pos, { name = was_node.name, param2 = was_node.param2 })
-					pipeworks.scan_for_tube_objects(pos)
 				end
 				meta:set_string("the_tube_was", "")
 			else

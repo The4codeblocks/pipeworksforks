@@ -263,7 +263,6 @@ end
 
 local function repair_tube(pos, node)
 	minetest.swap_node(pos, {name = node.name, param2 = node.param2})
-	pipeworks.scan_for_tube_objects(pos)
 	local meta = minetest.get_meta(pos)
 	local channel = meta:get_string("channel")
 	if channel ~= "" then
