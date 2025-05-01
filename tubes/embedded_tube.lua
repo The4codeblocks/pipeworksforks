@@ -45,8 +45,6 @@ function pipeworks.register_embedded_tube(nodename, opts)
 				return vector.equals(dir, direction) or vector.equals(vector.multiply(dir, -1), direction)
 			end
 		},
-		after_place_node = pipeworks.after_place,
-		after_dig_node = pipeworks.after_dig,
 	})
 
 	minetest.register_craft( {

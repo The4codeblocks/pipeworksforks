@@ -132,7 +132,6 @@ if pipeworks.enable_mese_tube then
 						end
 						update_formspec(pos)
 					end
-					return pipeworks.after_place(pos, placer, itemstack, pointed_thing)
 				end,
 				on_punch = update_formspec,
 				on_receive_fields = function(pos, formname, fields, sender)

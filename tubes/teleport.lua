@@ -315,7 +315,6 @@ if has_digilines then
 	def.after_place_node = function(pos, placer)
 		-- Set owner for digilines
 		minetest.get_meta(pos):set_string("owner", placer:get_player_name())
-		pipeworks.after_place(pos)
 	end
 	def.digiline = {
 		receptor = {

@@ -112,7 +112,6 @@ pipeworks.register_tube("pipeworks:tag_tube", {
 				end
 				update_formspec(pos)
 			end
-			return pipeworks.after_place(pos, placer, itemstack, pointed_thing)
 		end,
 		on_receive_fields = function(pos, formname, fields, sender)
 			if (fields.quit and not fields.key_enter_field)
