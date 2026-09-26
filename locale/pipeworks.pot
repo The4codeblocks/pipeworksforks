@@ -145,11 +145,11 @@ msgid "Exact match"
 msgstr ""
 
 #: filter-injector.lua:60
-msgid "Mode: Whitelist"
+msgid "Mode: Allow list"
 msgstr ""
 
 #: filter-injector.lua:60
-msgid "Mode: Blacklist"
+msgid "Mode: Deny list"
 msgstr ""
 
 #: filter-injector.lua:70

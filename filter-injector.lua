@@ -57,7 +57,7 @@ do
 		fs_helpers.prepends(margin + 8 + margin,  margin + textpadding + 0.75 + padding + textpadding + 0.75 + margin)
 	})
 	local filter_modes = {
-		S("Mode: Whitelist"), S("Mode: Blacklist")
+		S("Mode: Deny list"), S("Mode: Allow list")
 	}
 	get_filter_template_formspec = function(meta)
 		return table.concat({
